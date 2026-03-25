@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MLB Win Totals vs PECOTA
+
+A Next.js web app that compares MLB season win total lines from sportsbooks against PECOTA projected wins from Baseball Prospectus, helping identify the biggest edges for every team heading into the season.
+
+## What It Does
+
+- Scrapes current season win total lines (over/under) from [ScoresAndOdds](https://www.scoresandodds.com/mlb/futures)
+- Scrapes PECOTA simulated win projections from [Baseball Prospectus](https://www.baseballprospectus.com/standings/)
+- Calculates a **moat** (PECOTA Sim W minus sportsbook line) for all 30 teams
+- Sorts teams by absolute moat — biggest edges (over or under) appear first
+- Shows a signal (OVER / UNDER / PUSH) based on the direction of the gap
+
+Data refreshes automatically every 15 minutes via Next.js ISR.
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) App Router with server components
+- [Bun](https://bun.sh) as the package manager and runtime
+- [Tailwind CSS](https://tailwindcss.com) for styling
+- [Cheerio](https://cheerio.js.org) for server-side HTML scraping
+- [Vercel](https://vercel.com) for deployment
+
+## Data Sources
+
+| Source | Data |
+|--------|------|
+| [ScoresAndOdds](https://www.scoresandodds.com/mlb/futures) | Season win total lines (DraftKings, Caesars, Rivers) |
+| [Baseball Prospectus](https://www.baseballprospectus.com/standings/) | PECOTA simulated wins & losses |
+| [MLB.com](https://www.mlb.com/standings) | Authoritative 30-team model (divisions, abbreviations) |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# .env.local
+NEXT_PUBLIC_BASE_URL=http://localhost:3000   # set to your Vercel URL in production
+```
 
-## Learn More
+## Deploying to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Push to GitHub
+2. Import the repo at [vercel.com/new](https://vercel.com/new)
+3. Set `NEXT_PUBLIC_BASE_URL` to your Vercel deployment URL
+4. Deploy — every push to `main` will auto-redeploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Disclaimer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Data refreshes every 15 minutes. Not gambling advice.
