@@ -4,13 +4,8 @@ import ComparisonTable from './components/ComparisonTable';
 import ErrorBanner from './components/ErrorBanner';
 import StatsBar from './components/StatsBar';
 import { getCombinedData } from './lib/get-combined-data';
+import LocalTime from './components/LocalTime';
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-  });
-}
 
 export default async function Home() {
   const data = await getCombinedData();
@@ -37,7 +32,7 @@ export default async function Home() {
           <div className="flex items-center gap-4">
             <div className="flex flex-col items-end">
               <span className="text-xs font-semibold" style={{ color: '#BFD7ED', opacity: 0.55 }}>Last updated</span>
-              <span className="text-xs font-medium mt-0.5" style={{ color: '#BFD7ED' }}>{formatDate(data.lastUpdated)}</span>
+              <span className="text-xs font-medium mt-0.5" style={{ color: '#BFD7ED' }}><LocalTime iso={data.lastUpdated} /></span>
             </div>
             <a
               href="/"
