@@ -6,6 +6,8 @@ import StatsBar from './components/StatsBar';
 import { getCombinedData } from './lib/get-combined-data';
 import LocalTime from './components/LocalTime';
 
+export const revalidate = 900; // regenerate page at most every 15 minutes
+
 
 export default async function Home() {
   const data = await getCombinedData();
@@ -94,7 +96,7 @@ export default async function Home() {
             <a href="https://www.scoresandodds.com/mlb/futures" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700 transition-colors underline underline-offset-2">ScoresAndOdds Win Totals</a>
             <a href="https://www.baseballprospectus.com/standings/" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700 transition-colors underline underline-offset-2">Baseball Prospectus PECOTA</a>
             <a href="https://www.mlb.com/standings" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700 transition-colors underline underline-offset-2">MLB.com</a>
-            <span>· Refreshes every 15 minutes · Not gambling advice</span>
+            <span>· Data cached up to 15 minutes · Not gambling advice</span>
           </div>
         </footer>
       </div>
