@@ -1,17 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { WinTotalLine, PecotaProjection, WinTotalComparison, CombinedData } from '@/app/lib/types';
 import { MLB_TEAMS, logoPath } from '@/app/lib/teams';
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+import { scrapeWinTotals } from '@/app/lib/scrape-wintotals';
+import { scrapePecota } from '@/app/lib/scrape-pecota';
 
 export async function GET() {
   const [wtRes, pecotaRes] = await Promise.all([
-    fetch(`${BASE_URL}/api/wintotals`, { next: { revalidate: 900 } })
-      .then(r => r.json())
-      .catch(() => ({ data: [], error: 'Failed to fetch win totals' })),
-    fetch(`${BASE_URL}/api/pecota`, { next: { revalidate: 900 } })
-      .then(r => r.json())
-      .catch(() => ({ data: [], error: 'Failed to fetch PECOTA data' })),
+    scrapeWinTotals(),
+    scrapePecota(),
   ]);
 
   const wtData: WinTotalLine[] = wtRes.data ?? [];
