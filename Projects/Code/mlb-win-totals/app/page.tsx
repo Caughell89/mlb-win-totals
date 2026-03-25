@@ -3,23 +3,7 @@ import Image from 'next/image';
 import ComparisonTable from './components/ComparisonTable';
 import ErrorBanner from './components/ErrorBanner';
 import StatsBar from './components/StatsBar';
-import type { CombinedData } from './lib/types';
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
-
-async function getData(): Promise<CombinedData> {
-  try {
-    const res = await fetch(`${BASE_URL}/api/combined`, { next: { revalidate: 900 } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  } catch {
-    return {
-      comparisons: [],
-      lastUpdated: new Date().toISOString(),
-      errors: { wintotals: 'Failed to load', pecota: 'Failed to load' },
-    };
-  }
-}
+import { getCombinedData } from './lib/get-combined-data';
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString('en-US', {
@@ -29,7 +13,7 @@ function formatDate(iso: string): string {
 }
 
 export default async function Home() {
-  const data = await getData();
+  const data = await getCombinedData();
 
   return (
     <main className="min-h-screen" style={{ background: '#f4f7fb' }}>
